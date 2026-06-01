@@ -7,7 +7,7 @@
         "dev": "nodemon -r dotenv/config src/index.js",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
-        "crud:demo": "node src/crud-demo.js"
+        "db:studio" : "drizzle-kit studio"
     },
     "keywords": [],
     "author": "HarshK213",
