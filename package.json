@@ -7,7 +7,7 @@
         "dev": "nodemon -r dotenv/config src/index.js",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
-        "db:studio" : "drizzle-kit studio"
+        "db:studio": "drizzle-kit studio"
     },
     "keywords": [],
     "author": "HarshK213",
@@ -17,8 +17,8 @@
         "dotenv": "^17.4.2",
         "drizzle-orm": "^0.45.2",
         "express": "^5.2.1",
-        "mongoose": "^9.6.3",
-        "pg": "^8.21.0"
+        "pg": "^8.21.0",
+        "zod": "^4.4.3"
     },
     "devDependencies": {
         "drizzle-kit": "^0.31.10",
