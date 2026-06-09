@@ -2,7 +2,7 @@ import "dotenv/config";
 import http from "http";
 import { env } from "./config/env.js";
 import router from "./routes/index.js";
-import { attachWebScokerServer } from "./ws/server.js";
+import { attachWebSocketServer } from "./ws/server.js";
 import express from "express";
 
 const port = env.PORT;
@@ -23,7 +23,16 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", router);
-const { broadcastMatchCreated } = attachWebScokerServer(server);
+
+app.get("/api/health", (_req, res) => {
+    res.status(200).json({ success: true, message: "Sportz API is running" });
+});
+
+app.use((_req, res) => {
+    res.status(404).json({ success: false, message: "Route not found" });
+});
+
+const { broadcastMatchCreated } = attachWebSocketServer(server);
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
 
 server.listen(port, () => {
@@ -34,14 +43,6 @@ server.listen(port, () => {
 
     console.log(`Server is running on ${baseUrl}.`);
     console.log(
-        `WebSocker Server is running on ${baseUrl.replace("http", "ws")}/ws`
+        `WebSocket Server is running on ${baseUrl.replace("http", "ws")}/ws`
     );
-});
-
-app.get("/api/health", (_req, res) => {
-    res.status(200).json({ success: true, message: "Sportz API is running" });
-});
-
-app.use((_req, res) => {
-    res.status(404).json({ success: false, message: "Route not found" });
 });

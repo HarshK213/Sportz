@@ -7,16 +7,23 @@ function sendJson(socket, payload) {
 
 function broadcast(wss, payload) {
     for (const client of wss.clients) {
-        if (client.readyState !== WebSocket.OPEN) return;
+        if (client.readyState !== WebSocket.OPEN) continue;
         client.send(JSON.stringify(payload));
     }
 }
 
-export function attachWebScokerServer(server) {
+export function attachWebSocketServer(server) {
     const wss = new WebSocketServer({
         server,
         path: "/ws",
         maxPayload: 1024 * 1024,
+        verifyClient: (info) => {
+            const allowedOrigins = [
+                process.env.ALLOWED_ORIGIN || "http://localhost:3000",
+            ];
+            const origin = info.origin || info.req.headers.origin;
+            return allowedOrigins.includes(origin);
+        },
     });
     wss.on("connection", (socket) => {
         sendJson(socket, { type: "welcome" });

@@ -4,10 +4,11 @@ const loadConfig = () => {
         throw new Error("Port must be valid number.");
     }
 
-    const host = process.env.HOST || "0.0.0.0";
-    if (!host) {
-        throw new Error("HOST must be a valid IP");
+    const hostEnv = process.env.HOST;
+    if (hostEnv !== undefined && hostEnv.trim() === "") {
+        throw new Error("HOST must be a valid IP, not empty string");
     }
+    const host = hostEnv || "0.0.0.0";
 
     const dbUri = process.env.DATABASE_URL;
     if (!dbUri) {

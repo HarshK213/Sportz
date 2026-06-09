@@ -70,7 +70,15 @@ matchRouter.post("/", async (req, res) => {
             .returning();
 
         if (res.app.locals.broadcastMatchCreated) {
-            res.app.locals.broadcastMatchCreated(event);
+            try {
+                res.app.locals.broadcastMatchCreated(event);
+            } catch (broadcastErr) {
+                console.error(
+                    "Failed to broadcast match creation:",
+                    broadcastErr
+                );
+                // Continue - match was created successfully
+            }
         }
 
         return res.status(201).json({
