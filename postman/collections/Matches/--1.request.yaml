@@ -1,5 +1,15 @@
 $kind: http-request
 name: /
-url: ""
+url: "{{url}}match/"
 method: POST
+body:
+  type: json
+  content: |-
+    {
+        "sport": "Cricket",
+        "homeTeam": "India",
+        "awayTeam": "England",
+        "startTime": "2026-06-25T12:00:00.000Z",
+        "endTime": "2026-06-25T13:45:00.000Z"
+    }
 order: 1196749805056993
