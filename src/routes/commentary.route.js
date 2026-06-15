@@ -15,18 +15,14 @@ export const commentaryRoute = Router({ mergeParams: true });
 commentaryRoute.get("/", async (req, res) => {
     const parsedParams = matchIdParamSchema.safeParse(req.params);
     if (!parsedParams.success) {
-        return res.status(400).json({
-            error: "Invalid match id",
-            details: JSON.stringify(parsedParams.error),
-        });
+        console.error("Invalid match id params:", parsedParams.error);
+        return res.status(400).json({ error: "Invalid match id" });
     }
 
     const parsedQuery = listCommentaryQuerySchema.safeParse(req.query);
     if (!parsedQuery.success) {
-        return res.status(400).json({
-            error: "Invalid query",
-            details: JSON.stringify(parsedQuery.error),
-        });
+        console.error("Invalid query params:", parsedQuery.error);
+        return res.status(400).json({ error: "Invalid query" });
     }
 
     const limit = Math.min(parsedQuery.data.limit ?? 100, MAX_LIMIT);
@@ -41,28 +37,22 @@ commentaryRoute.get("/", async (req, res) => {
 
         return res.status(200).json({ data });
     } catch (err) {
-        return res.status(500).json({
-            error: "Failed to list commentary",
-            details: JSON.stringify(err),
-        });
+        console.error("Failed to list commentary:", err);
+        return res.status(500).json({ error: "Failed to list commentary" });
     }
 });
 
 commentaryRoute.post("/", async (req, res) => {
     const parsedParams = matchIdParamSchema.safeParse(req.params);
     if (!parsedParams.success) {
-        return res.status(400).json({
-            error: "Invalid match id",
-            details: JSON.stringify(parsedParams.error),
-        });
+        console.error("Invalid match id params:", parsedParams.error);
+        return res.status(400).json({ error: "Invalid match id" });
     }
 
     const parsedBody = createCommentarySchema.safeParse(req.body);
     if (!parsedBody.success) {
-        return res.status(400).json({
-            error: "Invalid payload",
-            details: JSON.stringify(parsedBody.error),
-        });
+        console.error("Invalid payload:", parsedBody.error);
+        return res.status(400).json({ error: "Invalid payload" });
     }
 
     const { minutes, ...rest } = parsedBody.data;
@@ -79,9 +69,11 @@ commentaryRoute.post("/", async (req, res) => {
 
         return res.status(201).json({ data: entry });
     } catch (err) {
-        return res.status(500).json({
-            error: "Failed to create commentary entry",
-            details: JSON.stringify(err),
-        });
+        console.error("Failed to create commentary entry:", err);
+        const pgCode = err.code ?? err.cause?.code;
+        if (pgCode === "23503") {
+            return res.status(404).json({ error: "Referenced match does not exist" });
+        }
+        return res.status(500).json({ error: "Failed to create commentary entry" });
     }
 });
