@@ -1,0 +1,5 @@
+$kind: http-request
+name: commentary
+url: "{{url}}/match/2/commentary?limit=50"
+method: GET
+order: 1467540938372

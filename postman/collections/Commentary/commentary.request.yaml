@@ -1,0 +1,19 @@
+$kind: http-request
+name: commentary
+url: "{{url}}/match/2/commentary"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "minutes": 42,
+        "sequence": 120,
+        "period": "2nd  inning",
+        "eventType": "sic",
+        "actor": "Alex Josh",
+        "team": "Australia",
+        "message": "six. very long",
+        "metadata": {"ball":"karam"},
+        "tags": ["six","shot"]
+    }
+order: 1781542216447
