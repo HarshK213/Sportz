@@ -32,8 +32,10 @@ app.use((_req, res) => {
     res.status(404).json({ success: false, message: "Route not found" });
 });
 
-const { broadcastMatchCreated } = attachWebSocketServer(server);
+const { broadcastMatchCreated , broadCommentary} = attachWebSocketServer(server);
+
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadCommentary;
 
 server.listen(port, () => {
     const baseUrl =
