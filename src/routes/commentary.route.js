@@ -67,6 +67,10 @@ commentaryRoute.post("/", async (req, res) => {
             })
             .returning();
 
+        if (res.app.locals.broadcastCommentary) {
+            res.app.locals.broadcastCommentary(entry.matchId, entry);
+        }
+        
         return res.status(201).json({ data: entry });
     } catch (err) {
         console.error("Failed to create commentary entry:", err);

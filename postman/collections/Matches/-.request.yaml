@@ -1,5 +1,5 @@
 $kind: http-request
 name: /
-url: ""
+url: "{{url}}/match/"
 method: GET
 order: 1780824224367
